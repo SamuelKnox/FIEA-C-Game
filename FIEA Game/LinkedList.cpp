@@ -66,3 +66,16 @@ void LinkedList::Remove(int number){
 		}
 	}
 }
+
+int LinkedList::GetValue(int index){
+	Node *currentNode = head;
+	int currentIndex = -1;
+	while (currentNode->next_node){
+		currentNode = currentNode->next_node;
+		currentIndex++;
+		if (index == currentIndex){
+			return currentNode->get_value();
+		}
+	}
+	return -1;
+}
