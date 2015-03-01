@@ -17,4 +17,5 @@ public:
 	std::string GetList();
 	bool Contains(int);
 	void Remove(int);
+	int GetValue(int);
 };

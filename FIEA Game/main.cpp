@@ -4,6 +4,7 @@
 
 #include "Player.h"
 #include "LinkedList.h"
+#include "HashMap.h"
 
 using std::cout;
 using std::cin;
@@ -12,10 +13,16 @@ using std::endl;
 std::string AskName();
 void AskForHelp();
 void SimonSayz();
+std::string GetFizzBuzz(int);
 LinkedList CreateLinkedList();
 void RemoveElementFromLinkedList(LinkedList*);
+HashMap PutLinkedListInHashMap(LinkedList*);
+void RemoveElementFromHashMap(HashMap*);
+void EndGame();
 
 Player player;
+
+const std::string NO_FIZZ_BUZZ_VALUE = "No associated FizzBuzz";
 
 int main()
 {
@@ -26,6 +33,9 @@ int main()
 	SimonSayz();
 	LinkedList linkedList = CreateLinkedList();
 	RemoveElementFromLinkedList(&linkedList);
+	HashMap hashMap = PutLinkedListInHashMap(&linkedList);
+	RemoveElementFromHashMap(&hashMap);
+	EndGame();
 	cout << endl;
 	system("PAUSE");
 	exit(0);
@@ -43,11 +53,11 @@ void AskForHelp(){
 	cout << "1. Yes.  I am always willing to help someone in need." << endl;
 	cout << "2. I am no fool!  Help you with what?" << endl;
 	cout << "3. I don't have time for you." << endl;
-	cout << "Hint:  Enter the number of what you would like to do." << endl;
 	int choice;
-	cin >> choice;
-	while (choice < 1 || choice > 3){
-		cin >> choice;
+	while (!(cin >> choice) || choice < 1 || choice > 3){
+		cout << endl << "Hint:  Enter the number of what you would like to do." << endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
 	cout << endl;
 	if (choice == 1){
@@ -71,16 +81,8 @@ void SimonSayz(){
 	std::string fizzBuzz;
 	for (int i = 0; i < 3; i++){
 		int number = rand() % 10000 + 1;
-		if (number % (3 * 5) == 0){
-			fizzBuzz = "FizzBuzz";
-		}
-		else if (number % 3 == 0){
-			fizzBuzz = "Fizz";
-		}
-		else if (number % 5 == 0){
-			fizzBuzz = "Buzz";
-		}
-		else{
+		std::string fizzBuzz = GetFizzBuzz(number);
+		if(fizzBuzz.compare(NO_FIZZ_BUZZ_VALUE) == 0){
 			i--;
 			continue;
 		}
@@ -99,7 +101,23 @@ void SimonSayz(){
 	getline(cin, x);
 }
 
-//make at least 3 long
+std::string GetFizzBuzz(int number){
+	std::string fizzBuzz;
+	if (number % (3 * 5) == 0){
+		fizzBuzz = "FizzBuzz";
+	}
+	else if (number % 3 == 0){
+		fizzBuzz = "Fizz";
+	}
+	else if (number % 5 == 0){
+		fizzBuzz = "Buzz";
+	}
+	else{
+		fizzBuzz = NO_FIZZ_BUZZ_VALUE;
+	}
+	return fizzBuzz;
+}
+
 LinkedList CreateLinkedList(){
 	cout << endl << "You can't talk when you are jinxed!  Now, the only way to break the curse is to form a linked list!  It's really quite simple.  Just tell me a bunch of positive integers, one at a time.  Don't worry about ordering the numbers.  I've got that covered.  You can say 0 when you are happy with your linked list." << endl;
 	LinkedList *linkedList = new LinkedList();
@@ -134,4 +152,39 @@ void RemoveElementFromLinkedList(LinkedList *_linkedList){
 	cout << "Good.  Now watch this.." << endl << "Abra kadabra!  Voodoo magic! " << number << " be gone!" << endl << endl << "Whew!  That took a lot out of me.  But it worked!  Take a look at my handy work:";
 	_linkedList->Remove(number);
 	cout << _linkedList->GetList() << endl << endl << "Your new list is strong enough to destroy the jinx!" << endl;
+}
+
+HashMap PutLinkedListInHashMap(LinkedList *_linkedList){
+	cout << "These are actually some great numbers.  In combination with FizzBuzz, they should be able to defeat any evils we may see in the future.  But as they are now, the numbers will soon expire.  If we put them in a HashMap along with their associated FizzBuzz values, we should be able to keep them safe for a long time.  I will go ahead and do that for you.";
+	HashMap *hashMap = new HashMap(_linkedList->get_count());
+	for (int i = 0; i < _linkedList->get_count(); i++){
+		int number = _linkedList->GetValue(i);
+		hashMap->Put(number, GetFizzBuzz(number));
+	}
+	cout << "  ...  Here is our HashMap:" << endl;
+	std::string map;
+	for (int i = 0; i < _linkedList->get_count(); i++){
+		int key = _linkedList->GetValue(i);
+		map += std::to_string(key) + " " + hashMap->GetElement(key) + "\n";
+	}
+	cout << map << endl;
+	return *hashMap;
+}
+
+void RemoveElementFromHashMap(HashMap *_hashMap){
+	cout << "Hmmm...on second thought, it may be a little too big.  I am going to remove one of the elements.  Which one do you want me to get rid of?" << endl;
+	int key;
+	cin >> key;
+	cout << endl;
+	while (!_hashMap->Contains(key)){
+		cout << "Just give me the key, and I will remove the entire element." << endl;
+		cin >> key;
+		cout << endl;
+	}
+	_hashMap->Remove(key);
+	cout << "Now that's what I call a strong defense against evil!  " << _hashMap->get_count() << " elements is the perfect size!" << endl;
+}
+
+void EndGame(){
+	cout << endl << "Thank you so much for your help!  You are a true hero!" << endl;
 }
