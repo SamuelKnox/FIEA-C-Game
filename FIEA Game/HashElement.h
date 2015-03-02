@@ -14,4 +14,3 @@ public:
 	int GetKey();
 	std::string GetValue();
 };
-
