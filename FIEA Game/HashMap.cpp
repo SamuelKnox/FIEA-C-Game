@@ -90,9 +90,7 @@ void HashMap::Remove(int key){
 			previousElement = currentElement;
 			currentElement = currentElement->next_element_;
 		}
-		if (currentElement->next_element_){
-			previousElement->next_element_ = currentElement->next_element_;
-		}
+		previousElement->next_element_ = currentElement->next_element_;
 		delete currentElement;
 	}
 	count_--;
