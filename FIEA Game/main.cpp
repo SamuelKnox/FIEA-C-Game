@@ -14,27 +14,31 @@ std::string AskName();
 void AskForHelp();
 void SimonSayz();
 std::string GetFizzBuzz(int);
-LinkedList CreateLinkedList();
+LinkedList* CreateLinkedList();
 void RemoveElementFromLinkedList(LinkedList*);
-HashMap PutLinkedListInHashMap(LinkedList*);
+HashMap* PutLinkedListInHashMap(LinkedList*);
 void RemoveElementFromHashMap(HashMap*);
 void EndGame();
+int GetNumberInput();
 
-Player player;
+Player player_;
 
-const std::string NO_FIZZ_BUZZ_VALUE = "No associated FizzBuzz";
+const int FIZZ_BUZZ_REPEAT_QUESTIONS_ = 3;
+const std::string NO_FIZZ_BUZZ_VALUE_ = "No associated FizzBuzz";
 
 int main()
 {
 	srand((unsigned int)time(NULL));
 	cout << "---FIEA C++ Game---" << endl << endl;
-	player.set_name(AskName());
+	player_.SetName(AskName());
 	AskForHelp();
 	SimonSayz();
-	LinkedList linkedList = CreateLinkedList();
-	RemoveElementFromLinkedList(&linkedList);
-	HashMap hashMap = PutLinkedListInHashMap(&linkedList);
-	RemoveElementFromHashMap(&hashMap);
+	LinkedList *linkedList = CreateLinkedList();
+	RemoveElementFromLinkedList(linkedList);
+	HashMap *hashMap = PutLinkedListInHashMap(linkedList);
+	RemoveElementFromHashMap(hashMap);
+	delete linkedList;
+	delete hashMap;
 	EndGame();
 	cout << endl;
 	system("PAUSE");
@@ -49,16 +53,12 @@ std::string AskName(){
 }
 
 void AskForHelp(){
-	cout << endl << "Greetings " << player.get_name() << ".  I know we just met, but I am in need of your assistance.  Will you help me?" << endl;
+	cout << endl << "Greetings " << player_.GetName() << ".  I know we just met, but I am in need of your assistance.  Will you help me?" << endl;
 	cout << "1. Yes.  I am always willing to help someone in need." << endl;
 	cout << "2. I am no fool!  Help you with what?" << endl;
 	cout << "3. I don't have time for you." << endl;
-	int choice;
-	while (!(cin >> choice) || choice < 1 || choice > 3){
-		cout << endl << "Hint:  Enter the number of what you would like to do." << endl;
-		std::cin.clear();
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	cout << "Hint:  Enter the number of what you would like to do." << endl;
+	int choice = GetNumberInput();
 	cout << endl;
 	if (choice == 1){
 		cout << endl;
@@ -79,10 +79,10 @@ void AskForHelp(){
 void SimonSayz(){
 	cout << "Evil Simon sayz that if we do not repeat what he sayz, he was curse our village.  You must say exactly what he says, or we are all doomed!" << endl << endl;
 	std::string fizzBuzz;
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < FIZZ_BUZZ_REPEAT_QUESTIONS_; i++){
 		int number = rand() % 10000 + 1;
 		std::string fizzBuzz = GetFizzBuzz(number);
-		if(fizzBuzz.compare(NO_FIZZ_BUZZ_VALUE) == 0){
+		if (fizzBuzz.compare(NO_FIZZ_BUZZ_VALUE_) == 0){
 			i--;
 			continue;
 		}
@@ -113,78 +113,86 @@ std::string GetFizzBuzz(int number){
 		fizzBuzz = "Buzz";
 	}
 	else{
-		fizzBuzz = NO_FIZZ_BUZZ_VALUE;
+		fizzBuzz = NO_FIZZ_BUZZ_VALUE_;
 	}
 	return fizzBuzz;
 }
 
-LinkedList CreateLinkedList(){
+LinkedList* CreateLinkedList(){
 	cout << endl << "You can't talk when you are jinxed!  Now, the only way to break the curse is to form a linked list!  It's really quite simple.  Just tell me a bunch of positive integers, one at a time.  Don't worry about ordering the numbers.  I've got that covered.  You can say 0 when you are happy with your linked list." << endl;
 	LinkedList *linkedList = new LinkedList();
-	int number;
-	cin >> number;
+	int number = GetNumberInput();
 	while (number > 0){
 		linkedList->AddNode(number);
-		cin >> number;
+		number = GetNumberInput();
 	}
-	if (linkedList->get_count() < 3){
+	cout << endl;
+	while (linkedList->GetCount() < 3){
 		cout << endl << "Errr...your list is pretty weak.  It needs to be at least 3 numbers long to ward of the jinx.  Give me another number." << endl;
-		cin >> number;
+		number = GetNumberInput();
 		while (number <= 0){
-			cin >> number;
+			number = GetNumberInput();
 		}
 		linkedList->AddNode(number);
 	}
-	cout << endl << "Hmmm....not bad.  The linked list you made was:" << endl << linkedList->GetList() << endl << endl;
-	return *linkedList;
+	cout << "Hmmm....not bad.  The linked list you made was:" << endl << linkedList->GetList() << endl << endl;
+	return linkedList;
 }
 
-void RemoveElementFromLinkedList(LinkedList *_linkedList){
+void RemoveElementFromLinkedList(LinkedList *linkedList){
 	cout << "That should keep the jinx at bay for a little while, but not for long.  The linked list is too long.  Fortunately for you, I am trained in the art of removing numbers from linked lists.  Just tell me which number you want me to remove, and I will take care of it for you." << endl;
-	int number;
-	cin >> number;
+	int number = GetNumberInput();
 	cout << endl;
-	while (!_linkedList->Contains(number)){
-		cout << "I am a talented remover of elements, but removing something that doesn't exist...not even evil Simon could do that.  Pick a number that exists in your linked list.  You must choose from the following:" << endl << _linkedList->GetList() << endl;
-		cin >> number;
+	while (!linkedList->Contains(number)){
+		cout << endl << "I am a talented remover of elements, but removing something that doesn't exist...not even evil Simon could do that.  Pick a number that exists in your linked list.  You must choose from the following:" << endl << linkedList->GetList() << endl;
+		number = GetNumberInput();
 		cout << endl;
 	}
 	cout << "Good.  Now watch this.." << endl << "Abra kadabra!  Voodoo magic! " << number << " be gone!" << endl << endl << "Whew!  That took a lot out of me.  But it worked!  Take a look at my handy work:";
-	_linkedList->Remove(number);
-	cout << _linkedList->GetList() << endl << endl << "Your new list is strong enough to destroy the jinx!" << endl;
+	linkedList->Remove(number);
+	cout << linkedList->GetList() << endl << endl << "Your new list is strong enough to destroy the jinx!" << endl;
 }
 
-HashMap PutLinkedListInHashMap(LinkedList *_linkedList){
+HashMap* PutLinkedListInHashMap(LinkedList *linkedList){
 	cout << "These are actually some great numbers.  In combination with FizzBuzz, they should be able to defeat any evils we may see in the future.  But as they are now, the numbers will soon expire.  If we put them in a HashMap along with their associated FizzBuzz values, we should be able to keep them safe for a long time.  I will go ahead and do that for you.";
-	HashMap *hashMap = new HashMap(_linkedList->get_count());
-	for (int i = 0; i < _linkedList->get_count(); i++){
-		int number = _linkedList->GetValue(i);
+	HashMap *hashMap = new HashMap(linkedList->GetCount());
+	for (int i = 0; i < linkedList->GetCount(); i++){
+		int number = linkedList->GetValue(i);
 		hashMap->Put(number, GetFizzBuzz(number));
 	}
 	cout << "  ...  Here is our HashMap:" << endl;
 	std::string map;
-	for (int i = 0; i < _linkedList->get_count(); i++){
-		int key = _linkedList->GetValue(i);
+	for (int i = 0; i < linkedList->GetCount(); i++){
+		int key = linkedList->GetValue(i);
 		map += std::to_string(key) + " " + hashMap->GetElement(key) + "\n";
 	}
 	cout << map << endl;
-	return *hashMap;
+	return hashMap;
 }
 
-void RemoveElementFromHashMap(HashMap *_hashMap){
+void RemoveElementFromHashMap(HashMap *hashMap){
 	cout << "Hmmm...on second thought, it may be a little too big.  I am going to remove one of the elements.  Which one do you want me to get rid of?" << endl;
-	int key;
-	cin >> key;
+	int key = GetNumberInput();
 	cout << endl;
-	while (!_hashMap->Contains(key)){
+	while (!hashMap->Contains(key)){
 		cout << "Just give me the key, and I will remove the entire element." << endl;
-		cin >> key;
+		key = GetNumberInput();
 		cout << endl;
 	}
-	_hashMap->Remove(key);
-	cout << "Now that's what I call a strong defense against evil!  " << _hashMap->get_count() << " elements is the perfect size!" << endl;
+	hashMap->Remove(key);
+	cout << "Now that's what I call a strong defense against evil!  " << hashMap->GetCount() << " elements is the perfect size!" << endl;
 }
 
 void EndGame(){
 	cout << endl << "Thank you so much for your help!  You are a true hero!" << endl;
+}
+
+int GetNumberInput(){
+	int number;
+	while (!(cin >> number)){
+		cout << endl << "That is not a number..." << endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+	return number;
 }

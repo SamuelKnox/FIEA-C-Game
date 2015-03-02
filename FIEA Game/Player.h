@@ -5,11 +5,11 @@
 class Player
 {
 private:
-	std::string name;
+	std::string name_;
 public:
 	Player();
 	~Player();
-	void set_name(std::string);
-	std::string get_name();
+	std::string GetName();
+	void SetName(std::string);
 };
 

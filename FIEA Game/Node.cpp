@@ -1,19 +1,17 @@
 #include "Node.h"
 
-
-Node::Node(int _value)
+Node::Node(int value)
 {
-	value = _value;
+	value_ = value;
 }
-
 
 Node::~Node()
 {
 }
 
-int Node::get_value(){
-	return value;
+int Node::GetValue(){
+	return value_;
 }
-void Node::set_value(int _value){
-	value = _value;
+void Node::SetValue(int value){
+	value_ = value;
 }

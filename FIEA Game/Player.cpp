@@ -9,9 +9,9 @@ Player::~Player()
 {
 }
 
-void Player::set_name(std::string _name){
-	name = _name;
+void Player::SetName(std::string name){
+	name_ = name;
 }
-std::string Player::get_name(){
-	return name;
+std::string Player::GetName(){
+	return name_;
 }
