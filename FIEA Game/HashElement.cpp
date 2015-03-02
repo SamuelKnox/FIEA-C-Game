@@ -1,19 +1,19 @@
 #include "HashElement.h"
 
-HashElement::HashElement(int _key, std::string _value)
+HashElement::HashElement(int key, std::string value)
 {
-	key = _key;
-	value = _value;
+	key_ = key;
+	value_ = value;
 }
 
 HashElement::~HashElement()
 {
 }
 
-int HashElement::get_key(){
-	return key;
+int HashElement::GetKey(){
+	return key_;
 }
 
-std::string HashElement::get_value(){
-	return value;
+std::string HashElement::GetValue(){
+	return value_;
 }

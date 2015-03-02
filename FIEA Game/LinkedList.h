@@ -7,15 +7,15 @@
 class LinkedList
 {
 private:
-	Node *head;
-	int count;
+	Node *head_;
+	int count_;
 public:
 	LinkedList();
 	~LinkedList();
-	int get_count();
+	int GetCount() const;
 	void AddNode(int);
 	std::string GetList();
 	bool Contains(int);
 	void Remove(int);
-	int GetValue(int);
+	int GetValue(int) const;
 };

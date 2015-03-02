@@ -5,13 +5,13 @@
 class HashElement
 {
 private:
-	int key;
-	std::string value;
+	int key_;
+	std::string value_;
 public:
 	HashElement(int, std::string);
 	~HashElement();
-	HashElement *next_element;
-	int get_key();
-	std::string get_value();
+	HashElement *next_element_;
+	int GetKey();
+	std::string GetValue();
 };
 

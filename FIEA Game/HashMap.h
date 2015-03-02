@@ -6,9 +6,9 @@
 class HashMap
 {
 private:
-	HashElement **map;
-	int size;
-	int count;
+	HashElement **map_;
+	int size_;
+	int count_;
 public:
 	HashMap(int);
 	~HashMap();
@@ -17,6 +17,6 @@ public:
 	std::string GetElement(int);
 	bool Contains(int);
 	void Remove(int);
-	int get_count();
+	int GetCount();
 };
 
