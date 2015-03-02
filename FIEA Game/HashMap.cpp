@@ -79,7 +79,11 @@ void HashMap::Remove(int key){
 	}
 	int hash = GetHash(key);
 	HashElement *currentElement = map_[hash];
-	if (!currentElement->GetKey() == key){
+	if (currentElement->GetKey() == key){
+		delete currentElement;
+		map_[hash] = nullptr;
+	}
+	else{
 		HashElement *previousElement = currentElement;
 		currentElement = currentElement->next_element_;
 		while (currentElement->GetKey() != key){
@@ -89,8 +93,8 @@ void HashMap::Remove(int key){
 		if (currentElement->next_element_){
 			previousElement->next_element_ = currentElement->next_element_;
 		}
+		delete currentElement;
 	}
-	delete currentElement;
 	count_--;
 }
 
