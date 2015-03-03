@@ -10,6 +10,10 @@ HashMap::HashMap(int size)
 	map_ = new HashElement*[size_]();
 }
 
+HashMap::HashMap(HashMap &hashMap){
+
+}
+
 HashMap::~HashMap()
 {
 	for (int i = 0; i < size_; i++){
@@ -17,56 +21,56 @@ HashMap::~HashMap()
 		if (!map_[hash]){
 			continue;
 		}
-		HashElement *currentElement = map_[hash];
-		HashElement *nextElement = map_[hash];
-		while (nextElement->next_element_){
-			nextElement = nextElement->next_element_;
-			delete currentElement;
-			currentElement = nextElement;
+		HashElement *current_element = map_[hash];
+		HashElement *next_element = map_[hash];
+		while (next_element->next_element_){
+			next_element = next_element->next_element_;
+			delete current_element;
+			current_element = next_element;
 		}
-		delete currentElement;
+		delete current_element;
 	}
 }
 
-int HashMap::GetHash(int key){
+int HashMap::GetHash(int key) const{
 	return key % size_;
 }
 
-void HashMap::Put(int key, std::string value){
+void HashMap::Insert(int key, std::string value){
 	int hash = GetHash(key);
 	if (!map_[hash]){
 		map_[hash] = new HashElement(key, value);
 	}
 	else{
-		HashElement *lastElement = map_[hash];
-		while (lastElement->next_element_){
-			lastElement = lastElement->next_element_;
+		HashElement *last_element = map_[hash];
+		while (last_element->next_element_){
+			last_element = last_element->next_element_;
 		}
-		lastElement->next_element_ = new HashElement(key, value);
+		last_element->next_element_ = new HashElement(key, value);
 	}
 	count_++;
 }
 
-std::string HashMap::GetElement(int key){
+std::string HashMap::Find(int key) const{
 	int hash = GetHash(key);
 	if (map_[hash]){
-		HashElement *currentElement = map_[hash];
-		while (currentElement->GetKey() != key && currentElement->next_element_){
-			currentElement = currentElement->next_element_;
+		HashElement *current_element = map_[hash];
+		while (current_element->GetKey() != key){
+			current_element = current_element->next_element_;
 		}
-		return currentElement->GetValue();
+		return current_element->GetValue();
 	}
 	return nullptr;
 }
 
-bool HashMap::Contains(int key){
+bool HashMap::Contains(int key) const{
 	int hash = GetHash(key);
 	if (map_[hash]){
-		HashElement *currentElement = map_[hash];
-		while (currentElement->GetKey() != key && currentElement->next_element_){
-			currentElement = currentElement->next_element_;
+		HashElement *current_element = map_[hash];
+		while (current_element->GetKey() != key && current_element->next_element_){
+			current_element = current_element->next_element_;
 		}
-		if (currentElement->GetKey() == key){
+		if (current_element->GetKey() == key){
 			return true;
 		}
 	}
@@ -78,24 +82,24 @@ void HashMap::Remove(int key){
 		return;
 	}
 	int hash = GetHash(key);
-	HashElement *currentElement = map_[hash];
-	if (currentElement->GetKey() == key){
-		delete currentElement;
-		map_[hash] = nullptr;
+	HashElement *current_element = map_[hash];
+	if (current_element->GetKey() == key){
+		map_[hash] = current_element->next_element_;
+		delete current_element;
 	}
 	else{
-		HashElement *previousElement = currentElement;
-		currentElement = currentElement->next_element_;
-		while (currentElement->GetKey() != key){
-			previousElement = currentElement;
-			currentElement = currentElement->next_element_;
+		HashElement *previous_element = current_element;
+		current_element = current_element->next_element_;
+		while (current_element->GetKey() != key){
+			previous_element = current_element;
+			current_element = current_element->next_element_;
 		}
-		previousElement->next_element_ = currentElement->next_element_;
-		delete currentElement;
+		previous_element->next_element_ = current_element->next_element_;
+		delete current_element;
 	}
 	count_--;
 }
 
-int HashMap::GetCount(){
+int HashMap::GetCount() const{
 	return count_;
 }

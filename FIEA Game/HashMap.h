@@ -5,18 +5,18 @@
 
 class HashMap
 {
+public:
+	HashMap(int size);
+	HashMap(HashMap &hashMap);
+	~HashMap();
+	int GetHash(int key) const;
+	void Insert(int key, std::string value);
+	std::string Find(int key) const;
+	bool Contains(int key) const;
+	void Remove(int key);
+	int GetCount() const;
 private:
 	HashElement **map_;
 	int size_;
 	int count_;
-public:
-	HashMap(int);
-	~HashMap();
-	int GetHash(int);
-	void Put(int, std::string);
-	std::string GetElement(int);
-	bool Contains(int);
-	void Remove(int);
-	int GetCount();
 };
-

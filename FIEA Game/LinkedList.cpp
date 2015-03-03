@@ -1,9 +1,7 @@
 #include "LinkedList.h"
 
-LinkedList::LinkedList()
-{
-	head_ = new Node(0);
-}
+LinkedList::LinkedList() :
+head_(new Node(0)){}
 
 LinkedList::~LinkedList()
 {
@@ -34,7 +32,7 @@ void LinkedList::AddNode(int value){
 	count_++;
 }
 
-std::string LinkedList::GetList(){
+std::string LinkedList::GetList() const{
 	std::string list;
 	Node *currentNode = head_;
 	while (currentNode->next_node_){
@@ -44,7 +42,7 @@ std::string LinkedList::GetList(){
 	return list;
 }
 
-bool LinkedList::Contains(int number){
+bool LinkedList::Contains(int number) const{
 	Node *currentNode = head_;
 	while (currentNode->next_node_){
 		currentNode = currentNode->next_node_;

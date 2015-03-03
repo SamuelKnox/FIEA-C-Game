@@ -1,20 +1,12 @@
 #include "HashElement.h"
 
-HashElement::HashElement(int key, std::string value)
-{
-	key_ = key;
-	value_ = value;
-	next_element_ = nullptr;
-}
+HashElement::HashElement(int key, std::string value) :
+key_(key), value_(value), next_element_(nullptr){}
 
-HashElement::~HashElement()
-{
-}
-
-int HashElement::GetKey(){
+int HashElement::GetKey() const{
 	return key_;
 }
 
-std::string HashElement::GetValue(){
+std::string HashElement::GetValue() const{
 	return value_;
 }

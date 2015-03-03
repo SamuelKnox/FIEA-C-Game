@@ -158,13 +158,13 @@ HashMap* PutLinkedListInHashMap(LinkedList *linkedList){
 	HashMap *hashMap = new HashMap(linkedList->GetCount());
 	for (int i = 0; i < linkedList->GetCount(); i++){
 		int number = linkedList->GetValue(i);
-		hashMap->Put(number, GetFizzBuzz(number));
+		hashMap->Insert(number, GetFizzBuzz(number));
 	}
 	cout << "  ...  Here is our HashMap:" << endl;
 	std::string map;
 	for (int i = 0; i < linkedList->GetCount(); i++){
 		int key = linkedList->GetValue(i);
-		map += std::to_string(key) + " " + hashMap->GetElement(key) + "\n";
+		map += std::to_string(key) + " " + hashMap->Find(key) + "\n";
 	}
 	cout << map << endl;
 	return hashMap;

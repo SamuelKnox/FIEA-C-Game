@@ -4,13 +4,12 @@
 
 class HashElement
 {
+public:
+	HashElement(int key, std::string value);
+	HashElement *next_element_;
+	int GetKey() const;
+	std::string GetValue() const;
 private:
 	int key_;
 	std::string value_;
-public:
-	HashElement(int, std::string);
-	~HashElement();
-	HashElement *next_element_;
-	int GetKey();
-	std::string GetValue();
 };

@@ -2,12 +2,11 @@
 
 class Node
 {
-private:
-	int value_;
 public:
 	Node(int);
-	~Node();
 	Node *next_node_;
-	int GetValue();
-	void SetValue(int);
+	int GetValue() const;
+	void SetValue(int value);
+private:
+	int value_;
 };

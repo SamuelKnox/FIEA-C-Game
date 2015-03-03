@@ -1,5 +1,5 @@
 #pragma once
 namespace PrimeChecker
 {
-	bool IsPrime(int);
+	bool IsPrime(int number);
 }
