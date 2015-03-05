@@ -10,10 +10,6 @@ HashMap::HashMap(int size)
 	map_ = new HashElement*[size_]();
 }
 
-HashMap::HashMap(HashMap &hashMap){
-
-}
-
 HashMap::~HashMap()
 {
 	for (int i = 0; i < size_; i++){

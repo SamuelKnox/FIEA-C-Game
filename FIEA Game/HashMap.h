@@ -7,7 +7,6 @@ class HashMap
 {
 public:
 	HashMap(int size);
-	HashMap(HashMap &hashMap);
 	~HashMap();
 	int GetHash(int key) const;
 	void Insert(int key, std::string value);
